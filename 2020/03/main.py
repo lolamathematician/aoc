@@ -19,18 +19,11 @@ for slope in slopes:
 	y_current = 0
 	right_move_length = slope[0]
 	down_move_length = slope[1]
-	# x_full_position = 0
 	while y_current <= y_max:
 		if lines[y_current][x_current] == '#':
 			trees_hit += 1
-			# print('#')
-		# else:
-		# 	print('.')
-		# print(x_current, '\t', x_full_position, '\t', y_current, '\t', trees_hit, end='\t')
 		x_current = (x_current + right_move_length) % x_mod
-		# x_full_position = x_full_position + right_move_length
 		y_current = y_current + down_move_length
 	trees_hit_record.append(trees_hit)
-	# print('\n', '-'*34)
 
 print(trees_hit_record)
