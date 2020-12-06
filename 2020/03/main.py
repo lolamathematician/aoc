@@ -1,35 +1,36 @@
 import math
 
-right_move_length = 3
-down_move_length = 1
+slopes = [[1, 1], [3, 1], [5, 1], [7, 1], [1, 2]]
 
-x_current = 0
-y_current = 0
-
-trees_hit = 0
-
-input_width = len
+trees_hit_record = []
 
 with open('input.txt', 'r') as f:
-	lines = f.readlines()
-	block_width =  len(lines[0])
-	y_max = len(lines) - 1
-	number_of_moves = y_max / down_move_length
-	x_max = number_of_moves * right_move_length
-	number_of_times_need_to_repeat = math.ceil(x_max/block_width)
-	l = [line[:-1]*number_of_times_need_to_repeat for line in lines]
-	l[-1] += '.' * number_of_times_need_to_repeat
+	lines = [line.replace('\n', '') for line in f.readlines()]
 
-for i in l:
-	print(l)
+# x_mod is the width of one input line to handle x_current going over the edge of the input
+x_mod = len(lines[0])
 
-# print(x_max, y_max, number_of_moves, number_of_times_need_to_repeat)
+# reduce y_max by one as the first line has index 0 in lines
+y_max = len(lines) - 1
 
-while y_current <= y_max	:
-	if l[y_current][x_current] == '#':
-		trees_hit += 1
-	x_current += 1
-	y_current += 1
-	print(x_current, y_current, trees_hit)
+for slope in slopes:
+	trees_hit = 0
+	x_current = 0
+	y_current = 0
+	right_move_length = slope[0]
+	down_move_length = slope[1]
+	# x_full_position = 0
+	while y_current <= y_max:
+		if lines[y_current][x_current] == '#':
+			trees_hit += 1
+			# print('#')
+		# else:
+		# 	print('.')
+		# print(x_current, '\t', x_full_position, '\t', y_current, '\t', trees_hit, end='\t')
+		x_current = (x_current + right_move_length) % x_mod
+		# x_full_position = x_full_position + right_move_length
+		y_current = y_current + down_move_length
+	trees_hit_record.append(trees_hit)
+	# print('\n', '-'*34)
 
-print(trees_hit)
+print(trees_hit_record)
